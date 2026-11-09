@@ -25,7 +25,8 @@ Policies: `hotpath/dedup-policy.toml` and `hotpath/lookup-policy.toml`.
 Instruction counts are judged and fail the check (`fail_check = true`),
 allocations are judged, and timing is shown but not judged.
 
-Run locally:
+Run locally (no hotpath features means no profiling, so the macros compile
+to nothing):
 
 ```sh
 cargo run --release --example dedup --features hotpath-alloc
