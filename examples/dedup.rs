@@ -32,8 +32,12 @@ fn input() -> Vec<u64> {
 
 #[hotpath::measure]
 fn dedup(values: &[u64]) -> Vec<u64> {
-    let mut seen: HashSet<u64, FixedState> = HashSet::default();
-    let mut unique = Vec::new();
+    // The input holds at most DISTINCT values: size both collections once
+    // instead of growing (and rehashing) them while deduplicating.
+    let capacity = (DISTINCT as usize).min(values.len());
+    let mut seen: HashSet<u64, FixedState> =
+        HashSet::with_capacity_and_hasher(capacity, FixedState::default());
+    let mut unique = Vec::with_capacity(capacity);
     for &value in values {
         if seen.insert(value) {
             unique.push(value);
